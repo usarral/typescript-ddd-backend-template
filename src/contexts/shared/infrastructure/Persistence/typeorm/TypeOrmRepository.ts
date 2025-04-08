@@ -2,8 +2,7 @@ import { AgregateRoot } from 'src/contexts/shared/domain/AgregateRoot'
 import { DataSource, EntitySchema, Repository } from 'typeorm'
 
 export abstract class TypeOrmRepository<T extends AgregateRoot> {
-  protected constructor(private readonly _dataSource: Promise<DataSource>) {
-  }
+  protected constructor(private readonly _dataSource: Promise<DataSource>) {}
 
   protected abstract entitySchema(): EntitySchema<T>
 

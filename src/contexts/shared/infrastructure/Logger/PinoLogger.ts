@@ -4,8 +4,7 @@ import { Logger as PinoLoggerInstance } from 'nestjs-pino'
 
 @Injectable()
 export class PinoLogger implements Logger {
-  constructor(private readonly logger: PinoLoggerInstance) {
-  }
+  constructor(private readonly logger: PinoLoggerInstance) {}
 
   debug(message: string, meta?: Record<string, unknown>): void {
     this.logger.debug({ ...meta }, message)

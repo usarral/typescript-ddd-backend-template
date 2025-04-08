@@ -1,2 +1,1 @@
-export interface QueryResponse {
-}
+export interface QueryResponse {}

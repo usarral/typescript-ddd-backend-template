@@ -3,8 +3,7 @@ import { CommandBus } from '../../domain/CommandBus'
 import { CommandHandlers } from './CommandHandler'
 
 export class InMemoryCommandBus implements CommandBus {
-  constructor(private readonly commandHandlers: CommandHandlers) {
-  }
+  constructor(private readonly commandHandlers: CommandHandlers) {}
 
   async dispatch(command: Command): Promise<void> {
     const handler = this.commandHandlers.get(command)

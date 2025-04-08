@@ -1,3 +1,1 @@
-export class TypeOrmCreateClientException extends Error {
-
-}
+export class TypeOrmCreateClientException extends Error {}

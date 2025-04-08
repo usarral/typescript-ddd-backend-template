@@ -24,7 +24,7 @@ export class TypeOrmClientFactory {
         database: config.database,
         entities: [
           __dirname +
-          '/../../../../**/**/infrastructure/Persistence/typeorm/*{.js,.ts}'
+            '/../../../../**/**/infrastructure/Persistence/typeorm/*{.js,.ts}'
         ],
         synchronize: false, // Enable this only in development for automatic schema generation
         logging: true

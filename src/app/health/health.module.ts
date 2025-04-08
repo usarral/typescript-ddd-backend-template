@@ -8,5 +8,4 @@ import { HealthController } from './api/health.controller'
 @Module({
   controllers: [HealthController]
 })
-export class HealthModule {
-}
+export class HealthModule {}
