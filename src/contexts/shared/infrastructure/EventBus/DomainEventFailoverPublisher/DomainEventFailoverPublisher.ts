@@ -1,7 +1,12 @@
-import { Collection, MongoClient } from 'mongodb'
+import { Collection, Document, MongoClient, WithId } from 'mongodb'
 import { DomainEventDeserializer } from '../DomainEventDeserializer'
 import { DomainEvent } from 'src/contexts/shared/domain/DomainEvent'
 import { DomainEventJsonSerializer } from '../DomainEventJsonSerializer'
+
+interface EventDocument extends Document {
+  eventId: string
+  event: string
+}
 
 export class DomainEventFailoverPublisher {
   static readonly collectionName = 'DomainEvents'
@@ -28,14 +33,14 @@ export class DomainEventFailoverPublisher {
   async consume(): Promise<Array<DomainEvent>> {
     const collection = await this.collection()
     const documents = await collection
-      .find()
+      .find<EventDocument>({})
       .limit(this.DOCUMENT_COLLECTION_LIMIT)
       .toArray()
     if (!this.deserializer) {
       throw new Error('Deserializer has not been set yet')
     }
     const events = await Promise.all(
-      documents.map((document) =>
+      documents.map((document: WithId<EventDocument>) =>
         this.deserializer!.deserialize(document.event)
       )
     )

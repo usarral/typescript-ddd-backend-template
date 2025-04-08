@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { LoggerModule } from 'nestjs-pino'
+import { HealthModule } from './health/health.module'
 
 /**
  * Root module of the application.
@@ -8,6 +9,8 @@ import { LoggerModule } from 'nestjs-pino'
  */
 @Module({
   imports: [
+    HealthModule,
+
     ConfigModule.forRoot({ isGlobal: true, cache: true }),
     LoggerModule.forRoot({
       pinoHttp: {

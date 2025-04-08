@@ -23,7 +23,11 @@ export abstract class MongoRepository<T extends AgregateRoot> {
   protected async persist(id: string, aggregateRoot: T): Promise<void> {
     const collection = await this.collection()
 
-    const document = { ...aggregateRoot.toPrimitives(), _id: id, id: undefined }
+    const primitives = aggregateRoot.toPrimitives() as Record<string, unknown>
+    const document = { ...primitives, _id: id, id: undefined } as Record<
+      string,
+      unknown
+    >
 
     await collection.updateOne(
       { _id: new ObjectId(id) },

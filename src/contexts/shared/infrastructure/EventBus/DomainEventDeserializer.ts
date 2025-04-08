@@ -1,5 +1,6 @@
 import { DomainEvent, DomainEventClass } from '../../domain/DomainEvent'
 import { DomainEventSubscribers } from './DomainEventSubscribers'
+import { DomainEventSubscriber } from '../../domain/DomainEventSubscriber'
 
 type DomainEventJSON = {
   type: string
@@ -9,20 +10,29 @@ type DomainEventJSON = {
   occurredOn: string
 }
 
+interface EventData {
+  data: DomainEventJSON
+}
+
 export class DomainEventDeserializer extends Map<string, DomainEventClass> {
   static configure(
     subscribers: DomainEventSubscribers
   ): DomainEventDeserializer {
     const mapping = new DomainEventDeserializer()
-    subscribers.items.forEach((subscriber) => {
-      subscriber.subscribedTo().forEach(mapping.registerEvent.bind(mapping))
-    })
+    subscribers.items.forEach(
+      (subscriber: DomainEventSubscriber<DomainEvent>) => {
+        const registerFn = mapping.registerEvent.bind(mapping) as (
+          event: DomainEventClass
+        ) => void
+        subscriber.subscribedTo().forEach(registerFn)
+      }
+    )
     return mapping
   }
 
   deserialize(event: string): Promise<DomainEvent> {
-    const eventData = JSON.parse(event).data as DomainEventJSON
-    const { type, aggregateId, attributes, id, occurredOn } = eventData
+    const eventData = JSON.parse(event) as EventData
+    const { type, aggregateId, attributes, id, occurredOn } = eventData.data
     const eventClass = super.get(type)
     if (!eventClass) {
       throw new Error(`DomainEvent mapping not found for event: ${type}`)

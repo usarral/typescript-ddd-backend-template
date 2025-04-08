@@ -5,7 +5,7 @@ import {
 } from 'src/contexts/shared/domain/value-object/ValueObject'
 
 export const ValueObjectTransformer = <T extends Primitives>(
-  ValueObject: NewableClass<ValueObject<any>>
+  ValueObject: NewableClass<ValueObject<T>>
 ) => {
   return {
     to: (value: ValueObject<T>): T => value.value,

@@ -21,7 +21,7 @@ async function bootstrap() {
   await app.listen(port, '0.0.0.0')
 
   const logger: Logger = app.get(Logger) // get the logger instance
-  logger.log(`Server is running on http://localhost:${port}/api`)
+  logger.log(`Server is running on http://localhost:${port}/`)
 }
 
 bootstrap().catch(handleError)

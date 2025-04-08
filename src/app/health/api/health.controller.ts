@@ -1,13 +1,19 @@
-import { Controller, Get, HttpCode, Inject, Logger } from '@nestjs/common'
+import { Controller, Get, HttpCode } from '@nestjs/common'
+import { Logger } from 'nestjs-pino'
 
 @Controller('health')
 export class HealthController {
-  constructor(@Inject(Logger) private readonly logger: Logger) {}
+  constructor(private readonly logger: Logger) {}
 
   @Get()
   @HttpCode(200)
   run() {
     this.logger.log('Health check endpoint hit')
-    return { status: 'ok' }
+    return {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      service: 'performsquad-backend',
+      version: process.env.npm_package_version ?? 'unknown'
+    }
   }
 }

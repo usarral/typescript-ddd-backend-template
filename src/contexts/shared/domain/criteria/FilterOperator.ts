@@ -16,11 +16,13 @@ export class FilterOperator extends EnumValueObject<Operator> {
   }
 
   static fromValue(value: string): FilterOperator {
-    for (const operatorValue of Object.values(Operator)) {
-      if (value === operatorValue) {
-        return new FilterOperator(operatorValue)
-      }
+    const operatorValues = Object.values(Operator) as string[]
+    const index = operatorValues.findIndex((op) => op === value)
+
+    if (index !== -1) {
+      return new FilterOperator(Object.values(Operator)[index])
     }
+
     throw new InvalidArgumentError(`The filter operator ${value} is invalid`)
   }
 

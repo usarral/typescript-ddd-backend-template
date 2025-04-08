@@ -35,12 +35,15 @@ export class MongoCriteriaConverter {
       Operator,
       TransformerFunction<Filter, MongoFilter>
     >([
-      [Operator.EQUAL, this.equalFilter],
-      [Operator.NOT_EQUAL, this.notEqualFilter],
-      [Operator.GT, this.greaterThanFilter],
-      [Operator.LT, this.lowerThanFilter],
-      [Operator.CONTAINS, this.containsFilter],
-      [Operator.NOT_CONTAINS, this.notContainsFilter]
+      [Operator.EQUAL, (filter: Filter) => this.equalFilter(filter)],
+      [Operator.NOT_EQUAL, (filter: Filter) => this.notEqualFilter(filter)],
+      [Operator.GT, (filter: Filter) => this.greaterThanFilter(filter)],
+      [Operator.LT, (filter: Filter) => this.lowerThanFilter(filter)],
+      [Operator.CONTAINS, (filter: Filter) => this.containsFilter(filter)],
+      [
+        Operator.NOT_CONTAINS,
+        (filter: Filter) => this.notContainsFilter(filter)
+      ]
     ])
   }
 
@@ -63,7 +66,7 @@ export class MongoCriteriaConverter {
       }
       return transformer(filter)
     })
-    return Object.assign({}, ...filter)
+    return Object.assign({}, ...filter) as MongoFilter
   }
 
   protected generateSort(order: Order): MongoSort {

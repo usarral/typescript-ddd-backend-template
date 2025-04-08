@@ -8,7 +8,7 @@ export class Filters {
   }
 
   static fromValues(filters: Array<Map<string, string>>): Filters {
-    return new Filters(filters.map(Filter.fromValues))
+    return new Filters(filters.map((filter) => Filter.fromValues(filter)))
   }
 
   static none(): Filters {
